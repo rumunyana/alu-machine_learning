@@ -1,51 +1,41 @@
 #!/usr/bin/env python3
-"""
-Defines a function that calculates the intersection of obtaining this data
-with the various hypothetical probabilities of developing severe side effects
-"""
+"""Bayesian Probability"""
 
 
 import numpy as np
 
 
-def intersection(x, n, P, Pr):
-    """
-    Calculates the intersection of obtaining this data with the
-    various hypothetical probabilities of developing severe side effects
+def binomial_coefficient(n, k):
+    """Custom binomial coefficient calculation"""
+    if k < 0 or k > n:
+        return 0
+    if k == 0 or k == n:
+        return 1
 
-    parameters:
-        x [int]: total number of patients that develop severe side effects
-        n [int]: total number of patients observed
-        P [1D numpy.ndarray]: containing the various hypothetical probabilities
-            of developing severe side effects
-        Pr [1D numpy.ndarray]: containing the prior beliefs of P
+    k = min(k, n - k)
+    result = 1
+    for i in range(1, k + 1):
+        result = result * (n - i + 1) // i
 
-    returns:
-        a 1D numpy.ndarray containing the intersection of obtaining the data,
-            x and n, with each probability in P
-    """
-    if type(n) is not int or n <= 0:
+    return result
+
+
+def likelihood(x, n, P):
+    """Check for valid input parameters"""
+    if not isinstance(n, int) or n <= 0:
         raise ValueError("n must be a positive integer")
-    if type(x) is not int or x < 0:
+    if not isinstance(x, int) or x < 0:
         raise ValueError(
             "x must be an integer that is greater than or equal to 0")
     if x > n:
         raise ValueError("x cannot be greater than n")
-    if type(P) is not np.ndarray or len(P.shape) != 1:
+    if not isinstance(P, np.ndarray) or P.ndim != 1:
         raise TypeError("P must be a 1D numpy.ndarray")
-    if type(Pr) is not np.ndarray or Pr.shape != P.shape:
-        raise TypeError("Pr must be a numpy.ndarray with the same shape as P")
-    for value in range(P.shape[0]):
-        if P[value] > 1 or P[value] < 0:
-            raise ValueError("All values in P must be in the range [0, 1]")
-        if Pr[value] > 1 or Pr[value] < 0:
-            raise ValueError("All values in Pr must be in the range [0, 1]")
-    if np.isclose([np.sum(Pr)], [1]) == [False]:
-        raise ValueError("Pr must sum to 1")
-    # likelihood calculated as binomial distribution
-    factorial = np.math.factorial
-    fact_coefficient = factorial(n) / (factorial(n - x) * factorial(x))
-    likelihood = fact_coefficient * (P ** x) * ((1 - P) ** (n - x))
-    # intersection is the likelihood times priors
-    intersection = likelihood * Pr
-    return intersection
+    if any(val < 0 or val > 1 for val in P):
+        raise ValueError("All values in P must be in the range [0, 1]")
+
+    # Calculate the likelihood in P using the custom binomial pmf
+    likelihoods = np.array([binomial_coefficient(
+        n, x) * p**x * (1 - p)**(n - x) for p in P])
+
+    return likelihoods
