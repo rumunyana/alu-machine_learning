@@ -45,4 +45,3 @@ class Neuron:
     def A(self):
         """Return output"""
         return self.__A
-    
