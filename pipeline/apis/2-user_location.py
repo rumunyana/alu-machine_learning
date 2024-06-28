@@ -1,57 +1,38 @@
 #!/usr/bin/env python3
-
 """
-Script to print the location of a specific GitHub user.
+By using the GitHub API, write a script that prints
+the location of a specific user:
 """
-
 import requests
-import sys
-import time
 
 
-def get_user_location(api_url):
+def main(url):
     """
-    Fetches and prints the location of a GitHub user based on the provided API URL.
+    - The user is passed as first argument of the script
+    with the full API URL, example: ./2-user_location.py
+    https://api.github.com/users/holbertonschool
+    - If the user doesn’t exist, print Not found
+    - If the status code is 403, print Reset in X min where X
+    is the number of minutes from now and the value of
+    X-Ratelimit-Reset
+    - Your code should not be executed when the file is
+    imported (you should use if __name__ == '__main__':)
 
-    Args:
-        api_url (str): The full API URL for the GitHub user.
-
-    Prints:
-        - The location of the user if available.
-        - "Reset in X min" if rate limit exceeded.
-        - "Not found" if the user does not exist.
-        - Error messages for other HTTP status codes or request exceptions.
     """
-    try:
-        response = requests.get(api_url)
+    response = requests.get(url)
 
-        if response.status_code == 200:
-            user_data = response.json()
-            location = user_data.get("location", "Location not available")
-            print(location)
-        elif response.status_code == 404:
-            print("Not found")
-        elif response.status_code == 403:
-            rate_limit_reset = int(
-                response.headers.get('X-Ratelimit-Reset', 0))
-            current_time = int(time.time())
-            diff = (rate_limit_reset - current_time) // 60
-            print("Reset in {} min".format(diff))
-        else:
-            print("Error: {}".format(response.status_code))
-    except requests.RequestException as e:
-        print("Error: {}".format(e))
+    if response.status_code == 404:
+        print("Not found")
+    elif response.status_code == 403:
+        reset_timestamp = int(response.headers["X-Ratelimit-Reset"])
+        current_timestamp = int(time.time())
+        reset_in_minutes = (reset_timestamp - current_timestamp) // 60
+        print("Reset in {} min".format(reset_in_minutes))
+    else:
+        print(response.json()["location"])
 
 
 if __name__ == "__main__":
-    """
-    Main execution block for fetching GitHub user location.
-    
-    Usage:
-        ./2-user_location.py <GitHub API URL>
-    """
-    if len(sys.argv) != 2:
-        print("Usage: ./2-user_location.py <GitHub API URL>")
-    else:
-        api_url = sys.argv[1]
-        get_user_location(api_url)
+    import sys
+
+    main(sys.argv[1])
