@@ -3,6 +3,7 @@
 By using the GitHub API, write a script that prints
 the location of a specific user:
 """
+import time
 import requests
 
 
@@ -11,7 +12,7 @@ def main(url):
     - The user is passed as first argument of the script
     with the full API URL, example: ./2-user_location.py
     https://api.github.com/users/holbertonschool
-    - If the user doesn’t exist, print Not found
+    - If the user doesnt exist, print Not found
     - If the status code is 403, print Reset in X min where X
     is the number of minutes from now and the value of
     X-Ratelimit-Reset
