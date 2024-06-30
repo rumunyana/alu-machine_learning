@@ -2,8 +2,9 @@
 """
 This module retrieves information about the upcoming SpaceX launch.
 """
+
 import requests
-from datetime import datetime, timedelta, timezone
+from datetime import datetime, timezone
 
 
 def get_upcoming_launch():
@@ -21,22 +22,17 @@ def get_upcoming_launch():
     rocket_id = upcoming_launch["rocket"]
     launchpad_id = upcoming_launch["launchpad"]
 
+    # Convert the launch date to local time
     launch_date_utc = datetime.fromtimestamp(date_unix, tz=timezone.utc)
-    launch_date_local = launch_date_utc.astimezone(timezone(
-        timedelta(hours=-4))
-    )
+    launch_date_local = launch_date_utc.astimezone()  # Local time conversion
     launch_date_str = launch_date_local.strftime('%Y-%m-%dT%H:%M:%S%z')
-    launch_date_str = "{}:{}".format(
-        launch_date_str[:-2], launch_date_str[-2:]
-    )
+    launch_date_str = "{}:{}".format(launch_date_str[:-2], launch_date_str[-2:])
 
     rocket_url = "https://api.spacexdata.com/v4/rockets/{}".format(rocket_id)
     rocket_response = requests.get(rocket_url)
     rocket_name = rocket_response.json()["name"]
 
-    launchpad_url = "https://api.spacexdata.com/v4/launchpads/{}".format(
-        launchpad_id
-    )
+    launchpad_url = "https://api.spacexdata.com/v4/launchpads/{}".format(launchpad_id)
     launchpad_response = requests.get(launchpad_url)
     launchpad_data = launchpad_response.json()
     launchpad_name = launchpad_data["name"]
@@ -53,4 +49,4 @@ def get_upcoming_launch():
 
 
 if __name__ == "__main__":
-    get_upcoming_launch()
+    print(get_upcoming_launch())
