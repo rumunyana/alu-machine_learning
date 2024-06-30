@@ -1,12 +1,10 @@
 #!/usr/bin/env python3
 """
-    This module displays the number of Rocket launches.
+This module displays the number of Rocket launches.
 """
-
 
 import requests
 from collections import Counter
-
 
 def get_launch_count_by_rocket():
     """
@@ -23,16 +21,15 @@ def get_launch_count_by_rocket():
     rocket_names = {rocket["id"]: rocket["name"] for rocket in rockets}
 
     rocket_launch_counts = [
-        (
-            rocket_names[rocket_id], count
-        ) for rocket_id, count in rocket_counts.items()
+        (rocket_names[rocket_id], count)
+        for rocket_id, count in rocket_counts.items()
     ]
     rocket_launch_counts.sort(key=lambda x: (-x[1], x[0]))
 
     return rocket_launch_counts
 
-
 if __name__ == "__main__":
     rocket_launch_counts = get_launch_count_by_rocket()
     for rocket_name, count in rocket_launch_counts:
         print("{}: {}".format(rocket_name, count))
+
