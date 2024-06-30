@@ -38,7 +38,7 @@ def main(url):
 
 if __name__ == "__main__":
     if len(sys.argv) != 2:
-        print("Usage: ./2-user_location.py <GitHub API URL>")
+        print("Usage: python 2-user_location.py <GitHub API URL>")
         sys.exit(1)
     
     main(sys.argv[1])
