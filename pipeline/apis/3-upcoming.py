@@ -2,8 +2,10 @@
 """
 This module retrieves information about the upcoming SpaceX launch.
 """
+
 import requests
 from datetime import datetime, timezone
+
 
 def get_upcoming_launch():
     """
@@ -29,7 +31,9 @@ def get_upcoming_launch():
     rocket_response = requests.get(rocket_url)
     rocket_name = rocket_response.json()["name"]
 
-    launchpad_url = "https://api.spacexdata.com/v4/launchpads/{}".format(launchpad_id)
+    launchpad_url = "https://api.spacexdata.com/v4/launchpads/{}".format(
+        launchpad_id
+    )
     launchpad_response = requests.get(launchpad_url)
     launchpad_data = launchpad_response.json()
     launchpad_name = launchpad_data["name"]
@@ -44,5 +48,7 @@ def get_upcoming_launch():
     )
     return formatted_output
 
+
 if __name__ == "__main__":
     print(get_upcoming_launch())
+
