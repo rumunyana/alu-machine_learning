@@ -1,25 +1,38 @@
 #!/usr/bin/env python3
+"""
+    This module displays the number of Rocket launches.
+"""
 
-
-""" Return list of ships"""
 
 import requests
-import sys
-import time
+from collections import Counter
+
+
+def get_launch_count_by_rocket():
+    """
+    Displays the number of Rocket launches.
+    """
+    url = "https://api.spacexdata.com/v4/launches"
+    response = requests.get(url)
+    launches = response.json()
+    rocket_counts = Counter(launch["rocket"] for launch in launches)
+
+    url = "https://api.spacexdata.com/v4/rockets"
+    response = requests.get(url)
+    rockets = response.json()
+    rocket_names = {rocket["id"]: rocket["name"] for rocket in rockets}
+
+    rocket_launch_counts = [
+        (
+            rocket_names[rocket_id], count
+        ) for rocket_id, count in rocket_counts.items()
+    ]
+    rocket_launch_counts.sort(key=lambda x: (-x[1], x[0]))
+
+    return rocket_launch_counts
 
 
 if __name__ == "__main__":
-    res = requests.get(sys.argv[1])
-
-    if res.status_code == 403:
-        rate_limit = int(res.headers.get('X-Ratelimit-Reset'))
-        current_time = int(time.time())
-        diff = (rate_limit - current_time) // 60
-        print("Reset in {} min".format(diff))
-        # get remaining rate
-
-    elif res.status_code == 404:
-        print("Not found")
-    elif res.status_code == 200:
-        res = res.json()
-        print(res['location'])
+    rocket_launch_counts = get_launch_count_by_rocket()
+    for rocket_name, count in rocket_launch_counts:
+        print("{}: {}".format(rocket_name, count))
