@@ -6,6 +6,7 @@ This module displays the number of Rocket launches.
 import requests
 from collections import Counter
 
+
 def get_launch_count_by_rocket():
     """
     Displays the number of Rocket launches.
@@ -27,6 +28,7 @@ def get_launch_count_by_rocket():
     rocket_launch_counts.sort(key=lambda x: (-x[1], x[0]))
 
     return rocket_launch_counts
+
 
 if __name__ == "__main__":
     rocket_launch_counts = get_launch_count_by_rocket()
