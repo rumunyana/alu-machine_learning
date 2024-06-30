@@ -1,4 +1,4 @@
-#!/usr/bin/env python3
+#!/usr/bin/env python
 """
 By using the GitHub API, write a script that prints
 the location of a specific user:
