@@ -292,7 +292,8 @@ class NST:
                 )
             )
 
-    def generate_image(self, iterations=1000, step=None, lr=0.01, beta1=0.9, beta2=0.99):
+    def generate_image(self, iterations=1000, step=None, lr=0.01, 
+                       beta1=0.9, beta2=0.99):
         '''
             Generates the neural style transfered image
 
