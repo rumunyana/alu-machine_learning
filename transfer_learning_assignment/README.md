@@ -2,7 +2,7 @@
 
 ## Problem Statement
 
-Agriculture is fundamental to global food security and sustainable development. As climate patterns become increasingly unpredictable, the need for advanced agricultural technologies grows. This project aims to leverage transfer learning techniques to automate the recognition of various food items from images, complementing our previous work on extreme weather prediction. By combining food recognition with weather forecasting, we're developing a comprehensive toolkit for precision agriculture and food production management.
+Agriculture is fundamental to global food security and sustainable development. The need for advanced agricultural technologies grows as climate patterns become increasingly unpredictable. This project aims to leverage transfer learning techniques to automatically recognize various food items from images, complementing my previous work on extreme weather prediction. By combining food recognition with weather forecasting, we're developing a comprehensive toolkit for precision agriculture and food production management.
 
 ## Project Context
 
