@@ -2,28 +2,25 @@
 
 ## Problem Statement
 
-Agriculture is fundamental to global food security and sustainable development. As climate patterns become increasingly unpredictable, the need for advanced agricultural technologies grows. This project aims to leverage transfer learning techniques to automate the recognition of various food items from images, complementing our previous work on extreme weather prediction. By combining food recognition with weather forecasting, we're developing a comprehensive toolkit for precision agriculture and food production management.
+Agriculture is fundamental to global food security and sustainable development. The need for advanced agricultural technologies grows as climate patterns become increasingly unpredictable. This project aims to leverage transfer learning techniques to automatically recognize various food items from images, complementing my previous work on extreme weather prediction. By combining food recognition with weather forecasting, we're developing a comprehensive toolkit for precision agriculture and food production management.
 
 ## Project Context
 
 This food image recognition system builds upon our previous work in extreme weather prediction:
+1. [Weather App Frontend](https://weather-app-nu-plum.vercel.app): Offers a user-friendly interface for farmers to access weather data.
 
-1. [Extreme Weather Prediction Model](https://github.com/rumunyana/extreme_weather_prediction): Predicts severe weather events that could impact food production and harvests.
-2. [Deployed Weather Prediction API](https://extreme-weather-prediction.onrender.com/docs): Provides real-time access to weather forecasts for agricultural planning.
-3. [Weather App Frontend](https://weather-app-nu-plum.vercel.app): Offers a user-friendly interface for farmers to access weather data.
-
-By integrating food recognition capabilities with our existing weather prediction tools, we're creating a holistic solution for modern agriculture. This system can assist in:
+By integrating food recognition capabilities with my existing weather prediction tools, we're creating a holistic solution for modern agriculture. This system can assist in:
 
 - Monitoring food crop growth and health
 - Optimizing planting and harvesting schedules based on weather forecasts
 - Early detection of crop diseases or quality issues
 - Yield estimation and food quality assessment
 
-Our goal is to enhance agricultural productivity, reduce food losses due to adverse weather conditions, and contribute to food security in the face of climate change.
+The goal is to enhance agricultural productivity, reduce food losses due to adverse weather conditions, and contribute to food security in the face of climate change.
 
 ## Dataset
 
-We utilized a comprehensive Food Image Recognition dataset from Kaggle, which contains a diverse collection of food images across multiple categories, reflecting various types of agricultural produce.
+I utilized a comprehensive Food Image Recognition dataset from Kaggle, which contains a diverse collection of food images across multiple categories, reflecting various types of agricultural produce.
 
 Dataset Link: [Food Image Recognition Dataset](https://www.kaggle.com/datasets/kritikseth/fruit-and-vegetable-image-recognition)
 
@@ -43,7 +40,7 @@ We selected the following pre-trained models for our transfer learning approach:
 
 ## Fine-Tuning Process
 
-For each model, we employed the following fine-tuning strategy:
+For each model, employed the following fine-tuning strategy:
 
 1. Loaded pre-trained weights from ImageNet
 2. Replaced the top layers with custom layers for multi-class classification
