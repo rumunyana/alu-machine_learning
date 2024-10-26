@@ -1,102 +1,61 @@
 #!/usr/bin/env python3
-""" 0x02. Hidden Markov Models """
+"""Write a function that performs the Baum-Welch algorithm for a
+Hidden Markov Model"""
+
+
 import numpy as np
 
 
-def forward(Observation, Emission, Transition, Initial):
+def baum_welch(Observation, Transition, Emission, Initial, iterations=1000):
     """
-    performs the forward algorithm for a hidden markov model
-    """
-    if not isinstance(Observation, np.ndarray) or len(Observation.shape) != 1:
-        return None, None
-    if not isinstance(Emission, np.ndarray) or len(Emission.shape) != 2:
-        return None, None
-    if not isinstance(Transition, np.ndarray)\
-            or len(Transition.shape) != 2\
-            or Transition.shape[0] != Transition.shape[1]:
-        return None, None
-    if not isinstance(Initial, np.ndarray) or len(Initial.shape) != 2:
-        return None, None
-    if Emission.shape[0] != Transition.shape[0] != Transition.shape[0] !=\
-       Initial.shape[0]:
-        return None, None
-    if Initial.shape[1] != 1:
-        return None, None
+    Performs the Baum-Welch algorithm for a Hidden Markov Model
 
+    parameters:
+        Observation [numpy.ndarray of shape (T,)]:
+            contains the index of the observation
+            T: number of observations
+        Transition [2D numpy.ndarray of shape (M, M)]:
+            contains the initialized transition probabilities
+            M: the number of hidden states
+        Emission [numpy.ndarray of shape (M, N)]:
+            contains the initialized emission probabilities
+            N: number of output states
+        Initial [numpy.ndarray of shape (M, 1)]:
+            contains the initialized starting probabilities
+        iterations [positive int]:
+            the number of times expectation-maximization should be performed
+
+    returns:
+        the converged Transition, Emission
+        or None, None on failure
+    """
+    # check that Observation is the correct type and dimension
+    if type(Observation) is not np.ndarray or len(Observation.shape) < 1:
+        return None, None
+    # save T from Observation's shape
     T = Observation.shape[0]
-    N = Transition.shape[0]
-
-    alpha = np.zeros((N, T))
-    alpha[:, 0, np.newaxis] = (Initial.T * Emission[:, Observation[0]]).T
-
-    for t in range(1, Observation.shape[0]):
-        for j in range(Transition.shape[0]):
-            alpha[j, t] = (alpha[:, t - 1].dot(Transition[:, j]) *
-                           Emission[j, Observation[t]])
-
-    prob = np.sum(alpha[:, -1])
-
-    return prob, alpha
-
-
-def backward(Observation, Emission, Transition, Initial):
-    """
-    performs the backward algorithm for a hidden markov model
-    """
-    if not isinstance(Observation, np.ndarray) or len(Observation.shape) != 1:
+    # check that Transition is the correct type and dimension
+    if type(Transition) is not np.ndarray or len(Transition.shape) != 2:
         return None, None
-    if not isinstance(Emission, np.ndarray) or len(Emission.shape) != 2:
+    # save M and check that Transition is square
+    M, M_check = Transition.shape
+    if M != M_check:
         return None, None
-    if not isinstance(Transition, np.ndarray)\
-            or len(Transition.shape) != 2\
-            or Transition.shape[0] != Transition.shape[1]:
+    # check that Emission is the correct type and dimension
+    if type(Emission) is not np.ndarray or len(Emission.shape) != 2:
         return None, None
-    if not isinstance(Initial, np.ndarray) or len(Initial.shape) != 2:
+    # check that Emission's dimension matches N from Transition and save N
+    M_check, N = Emission.shape
+    if M_check != M:
         return None, None
-    if Emission.shape[0] != Transition.shape[0] != Transition.shape[0] !=\
-       Initial.shape[0]:
+    # check that Initial is the correct type and dimension
+    if type(Initial) is not np.ndarray or len(Initial.shape) != 2:
         return None, None
-    if Initial.shape[1] != 1:
+    # check that Initial's dimensions match (M, 1)
+    M_check, one = Initial.shape
+    if M_check != M or one != 1:
         return None, None
-
-    T = Observation.shape[0]
-    N = Transition.shape[0]
-
-    beta = np.zeros((N, T))
-    beta[:, T - 1] = np.ones((N))
-
-    for t in range(T - 2, -1, -1):
-        for j in range(N):
-            beta[j, t] = ((beta[:, t + 1]
-                           * Emission[:, Observation[t + 1]]).
-                          dot(Transition[j, :]))
-
-    likelihood = np.sum(np.sum(Initial.T
-                               * Emission[:, Observation[0]]
-                               * beta[:, 0]))
-
-    return likelihood, beta
-
-
-def baum_welch(Observations, Transition, Emission, Initial, iterations=1000):
-    """
-    performs the Baum-Welch algorithm for a hidden markov model
-    """
-    if not isinstance(Observations,
-                      np.ndarray) or len(Observations.shape) != 1:
+    # check that iterations is a positive int
+    if type(iterations) is not int or iterations < 1:
         return None, None
-    if not isinstance(Emission, np.ndarray) or len(Emission.shape) != 2:
-        return None, None
-    if not isinstance(Transition, np.ndarray)\
-            or len(Transition.shape) != 2\
-            or Transition.shape[0] != Transition.shape[1]:
-        return None, None
-    if not isinstance(Initial, np.ndarray) or len(Initial.shape) != 2:
-        return None, None
-    if Emission.shape[0] != Transition.shape[0] != Transition.shape[0] !=\
-       Initial.shape[0]:
-        return None, None
-    if Initial.shape[1] != 1:
-        return None, None
-
-    return Transition, Emission
+    return None, None
