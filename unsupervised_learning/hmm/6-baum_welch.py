@@ -1,61 +1,44 @@
 #!/usr/bin/env python3
-"""Write a function that performs the Baum-Welch algorithm for a
-Hidden Markov Model"""
-
+"""Performing the Baum-Welch algorithm for a hidden markov model"""
 
 import numpy as np
 
 
-def baum_welch(Observation, Transition, Emission, Initial, iterations=1000):
-    """
-    Performs the Baum-Welch algorithm for a Hidden Markov Model
+def baum_welch(Observations, Transition, Emission, Initial, iterations=1000):
+    """Function that performs the Baum-Welch
+        algorithm for a hidden markov model
 
-    parameters:
-        Observation [numpy.ndarray of shape (T,)]:
-            contains the index of the observation
-            T: number of observations
-        Transition [2D numpy.ndarray of shape (M, M)]:
-            contains the initialized transition probabilities
-            M: the number of hidden states
-        Emission [numpy.ndarray of shape (M, N)]:
-            contains the initialized emission probabilities
-            N: number of output states
-        Initial [numpy.ndarray of shape (M, 1)]:
-            contains the initialized starting probabilities
-        iterations [positive int]:
-            the number of times expectation-maximization should be performed
+    Observations is a numpy.ndarray of shape (T,)
+        that contains the index of the observation
+    T is the number of observations
+    Transition is a numpy.ndarray of shape (M, M)
+        that contains the initialized transition probabilities
+    M is the number of hidden states
+    Emission is a numpy.ndarray of shape (M, N)
+        that contains the initialized emission probabilities
+    N is the number of output states
+    Initial is a numpy.ndarray of shape (M, 1) that
+        contains the initialized starting probabilities
+    iterations is the number of times
+        expectation-maximization should be performed
 
-    returns:
-        the converged Transition, Emission
-        or None, None on failure
+    Returns: the converged Transition, Emission, or None, None on failure
     """
-    # check that Observation is the correct type and dimension
-    if type(Observation) is not np.ndarray or len(Observation.shape) < 1:
+    if not isinstance(Observations, np.ndarray) or Observations.ndim != 1:
         return None, None
-    # save T from Observation's shape
-    T = Observation.shape[0]
-    # check that Transition is the correct type and dimension
-    if type(Transition) is not np.ndarray or len(Transition.shape) != 2:
+    if Observations.shape[0] == 0:
         return None, None
-    # save M and check that Transition is square
-    M, M_check = Transition.shape
-    if M != M_check:
+    if not isinstance(Emission, np.ndarray) or Emission.ndim != 2:
         return None, None
-    # check that Emission is the correct type and dimension
-    if type(Emission) is not np.ndarray or len(Emission.shape) != 2:
+    if not isinstance(Transition, np.ndarray) or Transition.ndim != 2:
         return None, None
-    # check that Emission's dimension matches N from Transition and save N
-    M_check, N = Emission.shape
-    if M_check != M:
+    if Emission.shape[0] != Transition.shape[0]:
         return None, None
-    # check that Initial is the correct type and dimension
-    if type(Initial) is not np.ndarray or len(Initial.shape) != 2:
+    if Transition.shape[0] != Transition.shape[1]:
         return None, None
-    # check that Initial's dimensions match (M, 1)
-    M_check, one = Initial.shape
-    if M_check != M or one != 1:
+    if not isinstance(Initial, np.ndarray) or Initial.ndim != 2:
         return None, None
-    # check that iterations is a positive int
-    if type(iterations) is not int or iterations < 1:
+    if Initial.shape[0] != Emission.shape[0] or Initial.shape[1] != 1:
         return None, None
+
     return None, None
