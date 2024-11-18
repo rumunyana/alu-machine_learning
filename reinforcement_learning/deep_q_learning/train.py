@@ -1,3 +1,8 @@
+#!/usr/bin/env python3
+"""
+Training an agent that can play Atari's Breakout
+"""
+
 import gym
 import numpy as np
 from tensorflow.keras.models import Sequential
