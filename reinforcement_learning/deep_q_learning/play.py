@@ -1,3 +1,9 @@
+#!/usr/bin/env python3
+"""
+Play Atari's Breakout
+"""
+
+
 import gym
 import numpy as np
 from tensorflow.keras.models import Sequential
